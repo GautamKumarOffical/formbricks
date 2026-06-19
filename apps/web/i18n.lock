@@ -3740,7 +3740,10 @@ checksums:
     workspace/workflows/duplicate_failed: 56b15c01ba3e3fafbfd226520023204f
     workspace/workflows/duplicate_success: b94c796f27301d2957a710dc06e73679
     workspace/workflows/name_too_long: 7713326b8063321db1893cdb21424367
+    workspace/workflows/no_results_description: b358733531cc8290f8b311a8cc3bf05d
+    workspace/workflows/no_results_title: e3f2c57c4024d33a20f192d45284d709
     workspace/workflows/no_workflows_description: 8a8152d86459e52a07e1ab28bd347121
+    workspace/workflows/no_workflows_title: f1a5ada694cc4d773d2b56b105306a09
     workspace/workflows/search_by_workflow_name: 9ce39ab494b1fa76252aa9bee55d22f8
     workspace/workflows/show_archived: c4c1c3bbddc1bb1540c079b589a2d3de
     workspace/workflows/unarchive: 671fc7e9d7c8cb4d182a25a46551c168
