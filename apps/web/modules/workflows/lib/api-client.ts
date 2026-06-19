@@ -132,6 +132,20 @@ export async function archiveWorkflow(workflowId: string): Promise<TWorkflowReso
   return body.data;
 }
 
+export async function unarchiveWorkflow(workflowId: string): Promise<TWorkflowResource> {
+  const response = await fetch(`/api/v3/workflows/${workflowId}/unarchive`, {
+    method: "POST",
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    throw await parseV3ApiError(response);
+  }
+
+  const body = (await response.json()) as { data: TWorkflowResource };
+  return body.data;
+}
+
 export async function deleteWorkflow(workflowId: string): Promise<void> {
   const response = await fetch(`/api/v3/workflows/${workflowId}`, {
     method: "DELETE",

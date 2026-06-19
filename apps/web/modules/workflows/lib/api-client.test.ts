@@ -11,6 +11,7 @@ import {
   deleteWorkflow,
   duplicateWorkflow,
   listWorkflows,
+  unarchiveWorkflow,
 } from "./api-client";
 import { createDefaultWorkflowDefinition } from "./default-workflow";
 
@@ -124,6 +125,18 @@ describe("workflows api-client requests", () => {
     expect(result).toEqual({ id: "wf_1", status: "archived" });
     expect(global.fetch).toHaveBeenCalledWith(
       "/api/v3/workflows/wf_1/archive",
+      expect.objectContaining({ method: "POST", cache: "no-store" })
+    );
+  });
+
+  test("unarchiveWorkflow posts to the unarchive endpoint and unwraps the resource", async () => {
+    vi.mocked(global.fetch).mockResolvedValueOnce(jsonResponse({ data: { id: "wf_1", status: "disabled" } }));
+
+    const result = await unarchiveWorkflow("wf_1");
+
+    expect(result).toEqual({ id: "wf_1", status: "disabled" });
+    expect(global.fetch).toHaveBeenCalledWith(
+      "/api/v3/workflows/wf_1/unarchive",
       expect.objectContaining({ method: "POST", cache: "no-store" })
     );
   });

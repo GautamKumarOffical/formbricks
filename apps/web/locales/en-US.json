@@ -3901,6 +3901,9 @@
       "no_workflows_description": "Create your first workflow to automate actions when responses come in.",
       "search_by_workflow_name": "Search by workflow name",
       "show_archived": "Show archived",
+      "unarchive": "Unarchive",
+      "unarchive_failed": "Failed to unarchive the workflow. Please try again.",
+      "unarchive_success": "Workflow unarchived.",
       "workflow_description_optional": "Description (optional)",
       "workflow_description_placeholder": "e.g. Notify the team when a response is completed",
       "workflow_name_placeholder": "e.g. Response follow-up"
