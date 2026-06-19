@@ -3881,6 +3881,7 @@
       "value_text": "Value (Text)"
     },
     "workflows": {
+      "alphabetical": "Alphabetical",
       "archive_failed": "Failed to archive the workflow. Please try again.",
       "archive_success": "Workflow archived.",
       "archive_workflow": "Archive workflow",
