@@ -120,13 +120,14 @@ export const EditProfileDetailsForm = ({
           ...data,
           name: data.name.trim(),
         });
-        if (result?.serverError) {
-          toast.error(getFormattedErrorMessage(result));
-          return;
+        if (result?.data) {
+          toast.success(t("workspace.settings.profile.profile_updated_successfully"));
+          window.location.reload();
+          form.reset(data);
+        } else {
+          const errorMessage = getFormattedErrorMessage(result);
+          toast.error(errorMessage);
         }
-        toast.success(t("workspace.settings.profile.profile_updated_successfully"));
-        window.location.reload();
-        form.reset(data);
       } catch (error: any) {
         toast.error(`${t("common.error")}: ${error.message}`);
       }

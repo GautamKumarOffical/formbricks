@@ -82,15 +82,7 @@ export const NotificationSwitch = ({
       switch (notificationType) {
         case "alert":
           if (notificationSettings[notificationType]?.[surveyOrWorkspaceOrOrganizationId] === true) {
-            handleSwitchChange();
-            toast.success(
-              t(
-                "workspace.settings.notifications.you_will_not_receive_any_more_emails_for_responses_on_this_survey"
-              ),
-              {
-                id: "notification-switch",
-              }
-            );
+            void handleSwitchChange();
           }
           break;
 
@@ -98,15 +90,7 @@ export const NotificationSwitch = ({
           if (
             !notificationSettings.unsubscribedOrganizationIds?.includes(surveyOrWorkspaceOrOrganizationId)
           ) {
-            handleSwitchChange();
-            toast.success(
-              t(
-                "workspace.settings.notifications.you_will_not_be_auto_subscribed_to_this_organizations_surveys_anymore"
-              ),
-              {
-                id: "notification-switch",
-              }
-            );
+            void handleSwitchChange();
           }
           break;
 
