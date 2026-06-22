@@ -85,6 +85,10 @@ export function TargetingCard({
         segmentId: segment.id,
         surveyId: localSurvey.id,
       });
+      if (clonedSegmentResponse?.serverError) {
+        toast.error(getFormattedErrorMessage(clonedSegmentResponse));
+        return;
+      }
       if (clonedSegmentResponse?.data) {
         setSegment(clonedSegmentResponse.data);
       }
@@ -121,16 +125,25 @@ export function TargetingCard({
 
   const handleLoadNewSegment = async (surveyId: string, segmentId: string) => {
     const updatedSurvey = await loadNewSegmentAction({ surveyId: surveyId, segmentId });
+    if (updatedSurvey?.serverError) {
+      throw new Error(getFormattedErrorMessage(updatedSurvey));
+    }
     return updatedSurvey?.data as TSurvey;
   };
 
   const handleSaveAsNewSegmentUpdate = async (segmentId: string, data: TSegmentUpdateInput) => {
     const updatedSegment = await updateSegmentAction({ segmentId, data });
+    if (updatedSegment?.serverError) {
+      throw new Error(getFormattedErrorMessage(updatedSegment));
+    }
     return updatedSegment?.data as TSegment;
   };
 
   const handleSaveAsNewSegmentCreate = async (data: TSegmentCreateInput) => {
     const createdSegment = await createSegmentAction(data);
+    if (createdSegment?.serverError) {
+      throw new Error(getFormattedErrorMessage(createdSegment));
+    }
     return createdSegment?.data as TSegment;
   };
 
@@ -154,9 +167,14 @@ export function TargetingCard({
   const handleResetAllFilters = async () => {
     try {
       const segmentResponse = await resetSegmentFiltersAction({ surveyId: localSurvey.id });
+      if (segmentResponse?.serverError) {
+        toast.error(getFormattedErrorMessage(segmentResponse));
+        return undefined;
+      }
       return segmentResponse?.data;
     } catch (err) {
       toast.error(t("workspace.segments.error_resetting_filters"));
+      return undefined;
     }
   };
 
