@@ -156,6 +156,14 @@ export const WebhookSettingsTab = ({
       webhookId: webhook.id,
       webhookInput: updatedData,
     });
+    if (updateWebhookActionResult?.serverError) {
+      const errorMessage = getFormattedErrorMessage(updateWebhookActionResult);
+      toast.error(errorMessage);
+      setIsUpdatingWebhook(false);
+      setOpen(false);
+      return;
+    }
+
     if (updateWebhookActionResult?.data) {
       router.refresh();
       toast.success(t("workspace.integrations.webhooks.webhook_updated_successfully"));
@@ -336,6 +344,12 @@ export const WebhookSettingsTab = ({
         onDelete={async () => {
           setOpen(false);
           const deleteWebhookActionResult = await deleteWebhookAction({ id: webhook.id });
+          if (deleteWebhookActionResult?.serverError) {
+            const errorMessage = getFormattedErrorMessage(deleteWebhookActionResult);
+            toast.error(errorMessage);
+            return;
+          }
+
           if (deleteWebhookActionResult?.data) {
             router.refresh();
             toast.success(t("workspace.integrations.webhooks.webhook_deleted_successfully"));

@@ -59,6 +59,15 @@ export const NotificationSwitch = ({
     const updatedNotificationSettingsActionResponse = await updateNotificationSettingsAction({
       notificationSettings: updatedNotificationSettings,
     });
+    if (updatedNotificationSettingsActionResponse?.serverError) {
+      const errorMessage = getFormattedErrorMessage(updatedNotificationSettingsActionResponse);
+      toast.error(errorMessage, {
+        id: "notification-switch",
+      });
+      setIsLoading(false);
+      return;
+    }
+
     if (updatedNotificationSettingsActionResponse?.data) {
       toast.success(t("workspace.settings.notifications.notification_settings_updated"), {
         id: "notification-switch",

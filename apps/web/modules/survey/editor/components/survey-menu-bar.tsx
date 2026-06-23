@@ -343,6 +343,12 @@ export const SurveyMenuBar = ({
         getDraftSurveyToPersist(localSurvey, segment)
       );
 
+      if (updatedSurveyResponse?.serverError) {
+        const errorMessage = getFormattedErrorMessage(updatedSurveyResponse);
+        toast.error(errorMessage);
+        return false;
+      }
+
       setIsSurveySaving(false);
       if (updatedSurveyResponse?.data) {
         setLocalSurvey(updatedSurveyResponse.data);
@@ -411,6 +417,12 @@ export const SurveyMenuBar = ({
       const segment = await handleSegmentUpdate();
       clearSurveyLocalStorage();
       const updatedSurveyResponse = await updateSurveyAction({ ...localSurvey, segment });
+
+      if (updatedSurveyResponse?.serverError) {
+        const errorMessage = getFormattedErrorMessage(updatedSurveyResponse);
+        toast.error(errorMessage);
+        return false;
+      }
 
       setIsSurveySaving(false);
       if (updatedSurveyResponse?.data) {

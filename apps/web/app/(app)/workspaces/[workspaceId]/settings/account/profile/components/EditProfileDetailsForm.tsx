@@ -87,6 +87,12 @@ export const EditProfileDetailsForm = ({
 
     const updatedUserResult = await updateUserAction(data);
 
+    if (updatedUserResult?.serverError) {
+      const errorMessage = getFormattedErrorMessage(updatedUserResult);
+      toast.error(errorMessage);
+      return;
+    }
+
     if (updatedUserResult?.data) {
       if (!emailVerificationDisabled) {
         toast.success(t("auth.verification-requested.new_email_verification_success"));
@@ -138,6 +144,13 @@ export const EditProfileDetailsForm = ({
     setIsResettingPassword(true);
 
     const result = await resetPasswordAction();
+    if (result?.serverError) {
+      const errorMessage = getFormattedErrorMessage(result);
+      toast.error(errorMessage);
+      setIsResettingPassword(false);
+      return;
+    }
+
     if (result?.data) {
       toast.success(t("auth.forgot-password.email-sent.heading"));
 

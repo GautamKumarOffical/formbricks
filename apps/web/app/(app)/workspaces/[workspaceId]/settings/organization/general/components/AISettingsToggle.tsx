@@ -64,6 +64,12 @@ export const AISettingsToggle = ({
         data: { isAISmartToolsEnabled: checked },
       });
 
+      if (response?.serverError) {
+        toast.error(getFormattedErrorMessage(response));
+        setLoadingField(null);
+        return;
+      }
+
       if (response?.data) {
         toast.success(t("workspace.settings.general.ai_settings_updated_successfully"));
         router.refresh();

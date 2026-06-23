@@ -86,6 +86,14 @@ export const EditAPIKeys = ({
     if (!activeKey) return;
     setIsLoading(true);
     const deleteApiKeyResponse = await deleteApiKeyAction({ id: activeKey.id });
+    if (deleteApiKeyResponse?.serverError) {
+      const errorMessage = getFormattedErrorMessage(deleteApiKeyResponse);
+      toast.error(errorMessage);
+      setIsDeleteKeyModalOpen(false);
+      setIsLoading(false);
+      return;
+    }
+
     if (deleteApiKeyResponse?.data) {
       const updatedApiKeys = apiKeysLocal?.filter((apiKey) => apiKey.id !== activeKey.id) || [];
       setApiKeysLocal(updatedApiKeys);
@@ -117,6 +125,14 @@ export const EditAPIKeys = ({
       },
     });
 
+    if (createApiKeyResponse?.serverError) {
+      const errorMessage = getFormattedErrorMessage(createApiKeyResponse);
+      toast.error(errorMessage);
+      setIsLoading(false);
+      setIsAddAPIKeyModalOpen(false);
+      return;
+    }
+
     if (createApiKeyResponse?.data) {
       const updatedApiKeys = [...apiKeysLocal, createApiKeyResponse.data];
       setApiKeysLocal(updatedApiKeys);
@@ -138,6 +154,14 @@ export const EditAPIKeys = ({
       apiKeyId: activeKey.id,
       apiKeyData: data,
     });
+
+    if (updateApiKeyResponse?.serverError) {
+      const errorMessage = getFormattedErrorMessage(updateApiKeyResponse);
+      toast.error(errorMessage);
+      setIsLoading(false);
+      setViewPermissionsOpen(false);
+      return;
+    }
 
     if (updateApiKeyResponse?.data) {
       const updatedApiKeys =

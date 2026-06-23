@@ -18,6 +18,10 @@ import { Button } from "@/modules/ui/components/button";
 import { FormControl, FormError, FormField, FormItem, FormProvider } from "@/modules/ui/components/form";
 import { Input } from "@/modules/ui/components/input";
 
+// Bounds the onboarding invite form so a single submit cannot fan out an unlimited number of
+// owner invites. The server-side rate limit is the real guard; this keeps the UI sensible.
+const MAX_INVITE_MEMBERS = 10;
+
 interface InviteMembersProps {
   IS_SMTP_CONFIGURED: boolean;
   organizationId: string;
@@ -43,6 +47,12 @@ export const InviteMembers = ({ IS_SMTP_CONFIGURED, organizationId }: InviteMemb
           name: member.name,
           organizationId,
         });
+        if (inviteResponse?.serverError) {
+          const errorMessage = getFormattedErrorMessage(inviteResponse);
+          toast.error(errorMessage);
+          continue;
+        }
+
         if (inviteResponse?.data) {
           toast.success(t("setup.invite.invitation_sent_to_email", { email: member.email }));
         } else {
@@ -129,9 +139,10 @@ export const InviteMembers = ({ IS_SMTP_CONFIGURED, organizationId }: InviteMemb
           <Button
             variant="ghost"
             onClick={() => {
-              setMembersCount((count) => count + 1);
+              setMembersCount((count) => Math.min(count + 1, MAX_INVITE_MEMBERS));
             }}
-            type="button">
+            type="button"
+            disabled={membersCount >= MAX_INVITE_MEMBERS}>
             <PlusIcon />
             {t("setup.invite.add_another_member")}
           </Button>

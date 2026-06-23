@@ -159,6 +159,12 @@ export const AddWebhookModal = ({
           webhookInput: updatedData,
           webhookSecret: testResult.secret,
         });
+        if (createWebhookActionResult?.serverError) {
+          const errorMessage = getFormattedErrorMessage(createWebhookActionResult);
+          toast.error(errorMessage);
+          return;
+        }
+
         if (createWebhookActionResult?.data) {
           router.refresh();
           setCreatedWebhook(createWebhookActionResult.data);

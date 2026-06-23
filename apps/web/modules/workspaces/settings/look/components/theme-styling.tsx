@@ -92,6 +92,12 @@ export const ThemeStyling = ({
       },
     });
 
+    if (updatedWorkspaceResponse?.serverError) {
+      const errorMessage = getFormattedErrorMessage(updatedWorkspaceResponse);
+      toast.error(errorMessage);
+      return;
+    }
+
     if (updatedWorkspaceResponse?.data) {
       form.reset({ ...STYLE_DEFAULTS });
       setPreviewBrandColor(STYLE_DEFAULTS.brandColor?.light ?? COLOR_DEFAULTS.brandColor);
@@ -125,6 +131,12 @@ export const ThemeStyling = ({
         styling: data,
       },
     });
+
+    if (updatedWorkspaceResponse?.serverError) {
+      const errorMessage = getFormattedErrorMessage(updatedWorkspaceResponse);
+      toast.error(errorMessage);
+      return;
+    }
 
     if (updatedWorkspaceResponse?.data) {
       const saved = updatedWorkspaceResponse.data.styling;

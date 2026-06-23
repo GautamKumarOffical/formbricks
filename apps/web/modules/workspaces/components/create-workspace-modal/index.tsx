@@ -98,6 +98,12 @@ export const CreateWorkspaceModal = ({
       },
     });
 
+    if (createWorkspaceResponse?.serverError) {
+      const errorMessage = getFormattedErrorMessage(createWorkspaceResponse);
+      toast.error(errorMessage);
+      return;
+    }
+
     if (createWorkspaceResponse?.data) {
       const workspace = createWorkspaceResponse.data;
       toast.success(t("common.workspace_created_successfully"));

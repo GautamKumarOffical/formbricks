@@ -25,6 +25,12 @@ export const SurveyStatusDropdown = () => {
   const handleStatusChange = async (status: TSurvey["status"]) => {
     const updateSurveyActionResponse = await updateSurveyAction({ ...survey, status });
 
+    if (updateSurveyActionResponse?.serverError) {
+      const errorMessage = getFormattedErrorMessage(updateSurveyActionResponse);
+      toast.error(errorMessage);
+      return;
+    }
+
     if (updateSurveyActionResponse?.data) {
       const { publishOn, status: resultingStatus } = updateSurveyActionResponse.data;
       const isResultScheduled = resultingStatus === "paused" && publishOn !== null;

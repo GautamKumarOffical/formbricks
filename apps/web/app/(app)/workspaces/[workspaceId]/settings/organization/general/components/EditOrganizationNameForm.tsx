@@ -52,6 +52,12 @@ export const EditOrganizationNameForm = ({ organization, membershipRole }: EditO
         data: { name },
       });
 
+      if (updatedOrganizationResponse?.serverError) {
+        const errorMessage = getFormattedErrorMessage(updatedOrganizationResponse);
+        toast.error(errorMessage);
+        return;
+      }
+
       if (updatedOrganizationResponse?.data) {
         toast.success(t("workspace.settings.general.organization_name_updated_successfully"));
         form.reset({ name: updatedOrganizationResponse.data.name });

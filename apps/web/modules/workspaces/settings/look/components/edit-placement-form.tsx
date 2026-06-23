@@ -72,6 +72,12 @@ export const EditPlacementForm = ({ workspace, isReadOnly }: EditPlacementProps)
         clickOutsideClose: data.clickOutsideClose,
       },
     });
+    if (updatedWorkspaceResponse?.serverError) {
+      const errorMessage = getFormattedErrorMessage(updatedWorkspaceResponse);
+      toast.error(errorMessage);
+      return;
+    }
+
     if (updatedWorkspaceResponse?.data) {
       toast.success(t("workspace.look.placement_updated_successfully"));
     } else {

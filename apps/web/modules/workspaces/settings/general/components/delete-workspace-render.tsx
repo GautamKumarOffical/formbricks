@@ -58,6 +58,14 @@ export const DeleteWorkspaceRender = ({
         confirmationName,
       });
 
+      if (deleteWorkspaceResponse?.serverError) {
+        const errorMessage = getFormattedErrorMessage(deleteWorkspaceResponse);
+        logger.error({ errorMessage, workspaceId: currentWorkspace.id }, "Workspace deletion action failed");
+        toast.error(errorMessage);
+        handleDeleteDialogOpenChange(false);
+        return;
+      }
+
       if (deleteWorkspaceResponse?.data) {
         if (organizationWorkspaces.length === 1) {
           localStorage.removeItem(FORMBRICKS_ENVIRONMENT_ID_LS);

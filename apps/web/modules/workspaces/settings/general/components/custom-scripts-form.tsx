@@ -52,6 +52,12 @@ export const CustomScriptsForm: React.FC<CustomScriptsFormProps> = ({ workspace,
           customHeadScripts: data.customHeadScripts || null,
         },
       });
+      if (updatedWorkspaceResponse?.serverError) {
+        const errorMessage = getFormattedErrorMessage(updatedWorkspaceResponse);
+        toast.error(errorMessage);
+        return;
+      }
+
       if (updatedWorkspaceResponse?.data) {
         toast.success(t("workspace.general.custom_scripts_updated_successfully"));
         form.reset({ customHeadScripts: updatedWorkspaceResponse.data.customHeadScripts ?? "" });
