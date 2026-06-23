@@ -47,6 +47,12 @@ export const SingleTag: React.FC<SingleTagProps> = ({
 
   const confirmDeleteTag = async () => {
     const deleteTagResponse = await deleteTagAction({ tagId });
+    if (deleteTagResponse?.serverError) {
+      const errorMessage = getFormattedErrorMessage(deleteTagResponse);
+      toast.error(errorMessage ?? t("common.something_went_wrong_please_try_again"));
+      return;
+    }
+
     if (deleteTagResponse?.data) {
       if (deleteTagResponse.data.ok) {
         toast.success(t("workspace.tags.tag_deleted"));
@@ -64,6 +70,13 @@ export const SingleTag: React.FC<SingleTagProps> = ({
 
   const handleUpdateTagName = async (e: React.FocusEvent<HTMLInputElement>) => {
     const result = await updateTagNameAction({ tagId, name: e.target.value.trim() });
+    if (result?.serverError) {
+      const errorMessage = getFormattedErrorMessage(result);
+      toast.error(errorMessage ?? t("common.something_went_wrong_please_try_again"));
+      setUpdateTagError(true);
+      return;
+    }
+
     if (result?.data) {
       if (result.data.ok) {
         setUpdateTagError(false);
@@ -89,6 +102,13 @@ export const SingleTag: React.FC<SingleTagProps> = ({
   const handleMergeTags = async (newTagId: string) => {
     setIsMergingTags(true);
     const mergeTagsResponse = await mergeTagsAction({ originalTagId: tagId, newTagId });
+
+    if (mergeTagsResponse?.serverError) {
+      const errorMessage = getFormattedErrorMessage(mergeTagsResponse);
+      toast.error(errorMessage ?? t("common.something_went_wrong_please_try_again"));
+      setIsMergingTags(false);
+      return;
+    }
 
     if (mergeTagsResponse?.data) {
       if (mergeTagsResponse.data.ok) {

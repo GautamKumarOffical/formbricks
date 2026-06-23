@@ -44,6 +44,12 @@ export const EditWaitingTimeForm: React.FC<EditWaitingTimeProps> = ({ workspace,
   const updateWaitingTime: SubmitHandler<TEditWaitingTimeFormValues> = async (data) => {
     try {
       const updatedWorkspaceResponse = await updateWorkspaceAction({ workspaceId: workspace.id, data });
+      if (updatedWorkspaceResponse?.serverError) {
+        const errorMessage = getFormattedErrorMessage(updatedWorkspaceResponse);
+        toast.error(errorMessage);
+        return;
+      }
+
       if (updatedWorkspaceResponse?.data) {
         toast.success(t("workspace.general.waiting_period_updated_successfully"));
         form.resetField("recontactDays", { defaultValue: updatedWorkspaceResponse.data.recontactDays });

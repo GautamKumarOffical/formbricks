@@ -104,6 +104,12 @@ export const OrganizationActions = ({
         role: data[0].role,
         teamIds: data[0].teamIds,
       });
+      if (inviteUserActionResult?.serverError) {
+        const errorMessage = getFormattedErrorMessage(inviteUserActionResult);
+        toast.error(errorMessage);
+        return;
+      }
+
       if (inviteUserActionResult?.data) {
         router.refresh();
         toast.success(t("workspace.settings.general.member_invited_successfully"));

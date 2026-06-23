@@ -61,6 +61,12 @@ export const EditWorkspaceNameForm: React.FC<EditWorkspaceNameProps> = ({ worksp
         },
       });
 
+      if (updatedWorkspaceResponse?.serverError) {
+        const errorMessage = getFormattedErrorMessage(updatedWorkspaceResponse);
+        toast.error(errorMessage);
+        return;
+      }
+
       if (updatedWorkspaceResponse?.data) {
         toast.success(t("workspace.general.workspace_name_updated_successfully"));
         form.resetField("name", { defaultValue: updatedWorkspaceResponse.data.name });

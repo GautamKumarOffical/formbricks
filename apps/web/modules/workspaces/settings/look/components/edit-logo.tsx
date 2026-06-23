@@ -78,6 +78,12 @@ export const EditLogo = ({ workspace, workspaceId, isReadOnly, isStorageConfigur
         workspaceId: workspace.id,
         data: updatedWorkspace,
       });
+      if (updateWorkspaceResponse?.serverError) {
+        const errorMessage = getFormattedErrorMessage(updateWorkspaceResponse);
+        toast.error(errorMessage);
+        return;
+      }
+
       if (updateWorkspaceResponse?.data) {
         toast.success(t("workspace.look.logo_updated_successfully"));
         router.refresh();
@@ -109,6 +115,12 @@ export const EditLogo = ({ workspace, workspaceId, isReadOnly, isStorageConfigur
         workspaceId: workspace.id,
         data: updatedWorkspace,
       });
+      if (updateWorkspaceResponse?.serverError) {
+        const errorMessage = getFormattedErrorMessage(updateWorkspaceResponse);
+        toast.error(errorMessage);
+        return;
+      }
+
       if (updateWorkspaceResponse?.data) {
         toast.success(t("workspace.look.logo_removed_successfully"));
         router.refresh();

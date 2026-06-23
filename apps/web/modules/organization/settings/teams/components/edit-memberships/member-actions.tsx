@@ -89,6 +89,12 @@ export const MemberActions = ({ organization, member, invite, showDeleteButton }
     try {
       if (!invite) return;
       const createInviteTokenResponse = await createInviteTokenAction({ inviteId: invite.id });
+      if (createInviteTokenResponse?.serverError) {
+        const errorMessage = getFormattedErrorMessage(createInviteTokenResponse);
+        toast.error(errorMessage);
+        return;
+      }
+
       if (createInviteTokenResponse?.data) {
         setShareInviteToken(createInviteTokenResponse.data.inviteToken);
         setShowShareInviteModal(true);
@@ -110,6 +116,12 @@ export const MemberActions = ({ organization, member, invite, showDeleteButton }
         inviteId: invite.id,
         organizationId: organization.id,
       });
+      if (resendInviteResponse?.serverError) {
+        const errorMessage = getFormattedErrorMessage(resendInviteResponse);
+        toast.error(errorMessage);
+        return;
+      }
+
       if (resendInviteResponse?.data) {
         toast.success(t("workspace.settings.general.invitation_sent_once_more"));
         router.refresh();

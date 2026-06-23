@@ -102,6 +102,14 @@ export const SurveyAnalysisCTA = ({
       surveyId: surveyId,
       targetWorkspaceId: workspace.id,
     });
+    if (duplicatedSurveyResponse?.serverError) {
+      const errorMessage = getFormattedErrorMessage(duplicatedSurveyResponse);
+      toast.error(errorMessage);
+      setIsCautionDialogOpen(false);
+      setLoading(false);
+      return;
+    }
+
     if (duplicatedSurveyResponse?.data) {
       toast.success(t("workspace.surveys.survey_duplicated_successfully"));
       router.push(`/workspaces/${workspace?.id}/surveys/${duplicatedSurveyResponse.data.id}/edit`);
@@ -138,6 +146,14 @@ export const SurveyAnalysisCTA = ({
       surveyId: survey.id,
       workspaceId: workspace.id,
     });
+    if (result?.serverError) {
+      const errorMessage = getFormattedErrorMessage(result);
+      toast.error(errorMessage);
+      setIsResetting(false);
+      setIsResetModalOpen(false);
+      return;
+    }
+
     if (result?.data) {
       toast.success(
         t("workspace.surveys.summary.survey_reset_successfully", {
@@ -161,6 +177,14 @@ export const SurveyAnalysisCTA = ({
     const loadingToastId = toast.loading(t("workspace.surveys.summary.generating_example_responses"));
     try {
       const result = await generateExampleResponsesAction({ surveyId: survey.id });
+      if (result?.serverError) {
+        const errorMessage = getFormattedErrorMessage(result);
+        toast.error(errorMessage || t("workspace.surveys.summary.example_responses_generation_failed"), {
+          id: loadingToastId,
+        });
+        return;
+      }
+
       if (result?.data) {
         toast.success(
           t("workspace.surveys.summary.example_responses_generated_successfully", {
